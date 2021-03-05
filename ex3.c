@@ -24,7 +24,6 @@ compute cluster node (Linux on x86)
 #include <string.h>     //for string comparison etc
 #include <stdlib.h>     //for malloc()
 
-
 char** split( char* input, char* delimiter, int maxTokenNum, int* readTokenNum )
 //Assumptions:
 //  - the input line is a string (i.e. with NULL character at the end)
@@ -89,19 +88,19 @@ void freeTokenArray(char** strArr, int size)
     //      afterwards
 }
 
-
 int main()
 {
     char **cmdLineArgs;
     char path[20] = ".";  //default search path
     char command[20] = ".";
     char userInput[121];
-    pid_t child_Pids[11] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL}; //one extra just in case
+    pid_t child_Pids[10] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL}; //one extra just in case
     int child_Counter = 0;
     int tokenNum;
     int background_Process = 0;
     int wait_Correctly = 0;
     int status;
+    int status_Inner;
     struct stat stats;
 
     //read user input
@@ -123,8 +122,8 @@ int main()
         //clear the list of pids of children who are finished
         for (int i = 0;i<10;i++){
             if (!child_Pids[i]){
-                waitpid(child_Pids[i], &status, WNOHANG);
-                if (WIFEXITED(status))child_Pids[i] = NULL;
+                waitpid(child_Pids[i], &status_Inner, WNOHANG);
+                if (WIFEXITED(status_Inner))child_Pids[i] = NULL;
                 break;
             }
         }
@@ -141,7 +140,7 @@ int main()
             wait_Correctly = 0;
             for (int i = 0;i<10;i++){
                     if (strtoll(cmdLineArgs[1],NULL,10) == child_Pids[i]){
-                        waitpid(child_Pids[i], NULL, 0);
+                        waitpid(child_Pids[i], &status, 0);
                         child_Pids[i] = NULL;
                         wait_Correctly = 1;
                         break;
@@ -151,6 +150,7 @@ int main()
             printf("%ld is not a valid child pid\n",strtoll(cmdLineArgs[1],NULL,10));
             }
         }
+
         else if (( strcmp( cmdLineArgs[0], "pc") == 0 )){
             printf("Unwaited Child Processes:\n");
             for (int i = 0;i<10;i++){
@@ -161,7 +161,7 @@ int main()
         }
 
         else if (( strcmp( cmdLineArgs[0], "result") == 0 )){
-            printf("%d\n",status);
+            printf("%d\n",WEXITSTATUS(status));
         }
 
         else{
@@ -185,13 +185,12 @@ int main()
                 if (child_Pids[child_Counter] == 0){
 
                     execv(command,cmdLineArgs);
-                    exit(3);
                 }
                 else{
                     if (background_Process == 1) printf("Child %d in background\n",child_Pids[child_Counter]);
                    if (background_Process == 0){
-                   waitpid(0, &status, 0);
-                   child_Pids[child_Counter] = NULL;
+                        waitpid(child_Pids[child_Counter], &status, 0);
+                        child_Pids[child_Counter] = NULL;
                    }
                 }
             }
@@ -204,7 +203,7 @@ int main()
         //Clean up the token array as it is dynamically allocated
         freeTokenArray(cmdLineArgs, tokenNum);
 
-        printf("YWIMC > ");
+        printf("\nYWIMC > "); // \n is added for clarity
         fgets(userInput, 120, stdin);
         cmdLineArgs = split( userInput, " \n", 7, &tokenNum );
     }
