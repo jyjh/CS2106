@@ -1,0 +1,224 @@
+Seed 1234, heap size 1028, #Req 10
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |  1028 bytes | 0]
+
+A: 58 integers
+   0 | Addr    34118 | nInt 58
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   232 bytes | 1]
+[+  232 |   796 bytes | 0]
+
+F: 34118 [S=1, R=0]
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   232 bytes | 0]
+[+  232 |   796 bytes | 0]
+
+A: 82 integers
+   0 | Addr    34200 | nInt 82
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   232 bytes | 0]
+[+  232 |   328 bytes | 1]
+[+  560 |   468 bytes | 0]
+
+A: 39 integers
+   0 | Addr    34200 | nInt 82
+   1 | Addr    34118 | nInt 39
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 1]
+[+  156 |    76 bytes | 0]
+[+  232 |   328 bytes | 1]
+[+  560 |   468 bytes | 0]
+
+F: 34118 [S=2, R=1]
+   0 | Addr    34200 | nInt 82
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 0]
+[+  156 |    76 bytes | 0]
+[+  232 |   328 bytes | 1]
+[+  560 |   468 bytes | 0]
+
+A: 89 integers
+   0 | Addr    34200 | nInt 82
+   1 | Addr    34348 | nInt 89
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 0]
+[+  156 |    76 bytes | 0]
+[+  232 |   328 bytes | 1]
+[+  560 |   356 bytes | 1]
+[+  916 |   112 bytes | 0]
+
+F: 34348 [S=2, R=1]
+   0 | Addr    34200 | nInt 82
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 0]
+[+  156 |    76 bytes | 0]
+[+  232 |   328 bytes | 1]
+[+  560 |   356 bytes | 0]
+[+  916 |   112 bytes | 0]
+
+F: 34200 [S=1, R=0]
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 0]
+[+  156 |    76 bytes | 0]
+[+  232 |   328 bytes | 0]
+[+  560 |   356 bytes | 0]
+[+  916 |   112 bytes | 0]
+
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 0]
+[+  156 |    76 bytes | 0]
+[+  232 |   328 bytes | 0]
+[+  560 |   356 bytes | 0]
+[+  916 |   112 bytes | 0]
+
+A: 52 integers
+   0 | Addr    34200 | nInt 52
+
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 0]
+[+  156 |    76 bytes | 0]
+[+  232 |   208 bytes | 1]
+[+  440 |   120 bytes | 0]
+[+  560 |   356 bytes | 0]
+[+  916 |   112 bytes | 0]
+
+*Tester Done. Cleaning up!
+[+    0] |      39      39      39      39
+[+    4] |      39      39      39      39
+[+    8] |      39      39      39      39
+[+   12] |      39      39      39      39
+[+   16] |      39      39      39      39
+[+   20] |      39      39      39      39
+[+   24] |      39      39      39      39
+[+   28] |      39      39      39      39
+[+   32] |      39      39      39      39
+[+   36] |      39      39      39      58
+[+   40] |      58      58      58      58
+[+   44] |      58      58      58      58
+[+   48] |      58      58      58      58
+[+   52] |      58      58      58      58
+[+   56] |      58      58      52      52
+[+   60] |      52      52      52      52
+[+   64] |      52      52      52      52
+[+   68] |      52      52      52      52
+[+   72] |      52      52      52      52
+[+   76] |      52      52      52      52
+[+   80] |      52      52      52      52
+[+   84] |      52      52      52      52
+[+   88] |      52      52      52      52
+[+   92] |      52      52      52      52
+[+   96] |      52      52      52      52
+[+  100] |      52      52      52      52
+[+  104] |      52      52      52      52
+[+  108] |      52      52      82      82
+[+  112] |      82      82      82      82
+[+  116] |      82      82      82      82
+[+  120] |      82      82      82      82
+[+  124] |      82      82      82      82
+[+  128] |      82      82      82      82
+[+  132] |      82      82      82      82
+[+  136] |      82      82      82      82
+[+  140] |      89      89      89      89
+[+  144] |      89      89      89      89
+[+  148] |      89      89      89      89
+[+  152] |      89      89      89      89
+[+  156] |      89      89      89      89
+[+  160] |      89      89      89      89
+[+  164] |      89      89      89      89
+[+  168] |      89      89      89      89
+[+  172] |      89      89      89      89
+[+  176] |      89      89      89      89
+[+  180] |      89      89      89      89
+[+  184] |      89      89      89      89
+[+  188] |      89      89      89      89
+[+  192] |      89      89      89      89
+[+  196] |      89      89      89      89
+[+  200] |      89      89      89      89
+[+  204] |      89      89      89      89
+[+  208] |      89      89      89      89
+[+  212] |      89      89      89      89
+[+  216] |      89      89      89      89
+[+  220] |      89      89      89      89
+[+  224] |      89      89      89      89
+[+  228] |      89       0       0       0
+[+  232] |       0       0       0       0
+[+  236] |       0       0       0       0
+[+  240] |       0       0       0       0
+[+  244] |       0       0       0       0
+[+  248] |       0       0       0       0
+[+  252] |       0       0       0       0
+[+  256] |       0
+Heap Meta Info:
+===============
+Total Size = 1028 bytes
+Start Address = 34118
+Partition list:
+[+    0 |   156 bytes | 0]
+[+  156 |    76 bytes | 0]
+[+  232 |   208 bytes | 1]
+[+  440 |   120 bytes | 0]
+[+  560 |   356 bytes | 0]
+[+  916 |   112 bytes | 0]
+
+
+Heap Usage Statistics:
+======================
+Total Space: 1028 bytes
+Total Occupied Partitions: 1
+	Total Occupied Size: 208 bytes
+Total Number of Holes: 5
+	Total Hole Size: 820 bytes
