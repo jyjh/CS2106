@@ -196,12 +196,17 @@ void addPartitionAtLevel( unsigned int lvl, unsigned int offset )
  *********************************************************/
 {
     int i;
+    printf("lvl=%d %i offset=%d %i\n", lvl, lvl, offset, offset);
     //for(i=0; i<10; i++)
         partInfo* old = hmi.A[lvl];
         hmi.A[lvl] = (partInfo*) malloc(sizeof(partInfo));
         hmi.A[lvl]->offset = offset;
         hmi.A[lvl]->nextPart = old;
-        printHeapMetaInfo();
+        //printHeapMetaInfo();
+
+        /*while(A[lvl]){
+            lvl++;
+        }*/
     //hmi.A[lvl] = ;
 }
 
@@ -222,17 +227,17 @@ partInfo* removePartitionAtLevel(unsigned int lvl)
         if(lvl==hmi.maxIdx) return NULL;
         lvl++;
     }
-    printf("initLvl: %d     lvl: %d\n", initLvl, lvl);
+    //printf("initLvl: %d     lvl: %d\n", initLvl, lvl);
 
     int addr, initOffset = hmi.A[lvl]->offset;
 
     addr = hmi.A[lvl]->offset + (1<<(lvl-1));
-      printf("start: %d     %d\n", hmi.A[lvl]->offset, addr);
-      printHeapMetaInfo();
+      //printf("start: %d     %d\n", hmi.A[lvl]->offset, addr);
+      //printHeapMetaInfo();
     hmi.A[lvl] = hmi.A[lvl]->nextPart;
 
     //puts("\nhi\n");
-    printHeapMetaInfo();
+    //printHeapMetaInfo();
 
     for(i=lvl-1; i>=initLvl; i--){
         //if(i!=lvl){
@@ -243,9 +248,9 @@ partInfo* removePartitionAtLevel(unsigned int lvl)
             hmi.A[i]->nextPart = old;
             addr = (1<<(i-1));
 
-            printf("i=%d     %d %d\n", i, hmi.A[i]->offset, addr);
+            //printf("i=%d     %d %d\n", i, hmi.A[i]->offset, addr);
             //break;
-            printHeapMetaInfo();
+            //printHeapMetaInfo();
         //}
 
     }
@@ -267,7 +272,7 @@ partInfo* removePartitionAtLevel(unsigned int lvl)
     ans->offset = initOffset;
     ans->nextPart = old;
     printf("final: %d %p\n", ans->offset, ans->nextPart);
-    printHeapMetaInfo();
+    //printHeapMetaInfo();
 
     return ans;
 }
@@ -296,16 +301,24 @@ int setupHeap(int initialSize)
     //
     int max = 0, product = 1;
     for(max=0; product!=hmi.totalSize; max++, product*=2);
-    printf("max: %d\ntotal size: %d\n", max, hmi.totalSize);
+    //printf("max: %d\ntotal size: %d\n", max, hmi.totalSize);
 
     hmi.A = (partInfo**) malloc(sizeof (partInfo*) * (max+1));   //change this!
     int i;
-    for(i=0; i<max; i++){
-      hmi.A[i] = NULL;
-    }
     hmi.A[max] = malloc(sizeof(partInfo));
     hmi.A[max]->offset = 0;
     hmi.A[max]->nextPart = NULL;
+
+    for(i=0; i<max; i++){
+        /*if(hmi.totalSize%2){
+            hmi.A[i] = malloc(sizeof(partInfo));
+            hmi.A[i]->offset = 0;
+            hmi.A[i]->nextPart = NULL;
+        }else */
+        hmi.A[i] = NULL;
+        /*printf("%d %d\n", hmi.totalSize%2, hmi.totalSize/2);
+        hmi.totalSize /= 2;*/
+    }
     hmi.maxIdx = max; //change this!
     hmi.internalFragTotal = 0;
 
@@ -346,8 +359,8 @@ void myfree(void* address, int size)
     partInfo* part = (partInfo*)address;
 
     unsigned int addr = part->offset;
-    printf("max: %d;  size: %d;  address: %p\n", max, size, address);
+    printf("max: %d;  size: %d;  address: %p %d\n", max, size, address, address-hmi.base);
     printf("%i %d %p\n", (unsigned int)(part->offset), part->offset, part->nextPart);
 
-    return addPartitionAtLevel(max, address);
+    return addPartitionAtLevel(max, part->offset);
 }
