@@ -277,7 +277,7 @@ partInfo* removePartitionAtLevel(unsigned int lvl)
     return ans;
 }
 
-int setupHeap(int initialSize)
+int setupHeap(int initialSize, int minPartSize, int maxPartSize)
 /**********************************************************
  * Setup a heap with "initialSize" bytes
  *********************************************************/
@@ -299,29 +299,42 @@ int setupHeap(int initialSize)
     //       hmi.A <= an array of partition linked list
     //       hmi.maxIdx <= the largest index for hmi.A[]
     //
+    //printf("max: %d;  total size: %d\n", 1, initialSize);
     int max = 0, product = 1;
-    for(max=0; product!=hmi.totalSize; max++, product*=2);
-    //printf("max: %d\ntotal size: %d\n", max, hmi.totalSize);
+    for(max=0; product<=hmi.totalSize; max++, product*=2);
+    max --;
+    printf("max: %d\ntotal size: %d\n", max, hmi.totalSize);
 
     hmi.A = (partInfo**) malloc(sizeof (partInfo*) * (max+1));   //change this!
     int i;
     hmi.A[max] = malloc(sizeof(partInfo));
     hmi.A[max]->offset = 0;
     hmi.A[max]->nextPart = NULL;
+    initialSize -= (1<<max);
 
     for(i=0; i<max; i++){
-        /*if(hmi.totalSize%2){
+        if(initialSize%2){
             hmi.A[i] = malloc(sizeof(partInfo));
             hmi.A[i]->offset = 0;
             hmi.A[i]->nextPart = NULL;
-        }else */
-        hmi.A[i] = NULL;
-        /*printf("%d %d\n", hmi.totalSize%2, hmi.totalSize/2);
-        hmi.totalSize /= 2;*/
+        }else
+            hmi.A[i] = NULL;
+        //printf("%d %d\n", initialSize%2, initialSize/2);
+        initialSize /= 2;
+    }
+
+    int sum = 0;
+    for(i=max; i>=0; i--){
+        if(hmi.A[i] != NULL){
+            hmi.A[i]->offset = sum;
+            sum += (1<<i);
+        }
+
+        //printf("%d %d\n", i, sum);
     }
     hmi.maxIdx = max; //change this!
     hmi.internalFragTotal = 0;
-
+    printHeapMetaInfo();
     return 1;
 }
 
