@@ -4,7 +4,7 @@
 * Student Id: A????????
 * Lab Group: B??
 *************************************
-Note: Duplicate the above and fill in 
+Note: Duplicate the above and fill in
 for the 2nd member if  you are on a team
 */
 
@@ -43,11 +43,11 @@ void printPartitionList(partInfo* piPtr)
  *********************************************************/
 {
 	partInfo* current;
-	
-	for ( current = piPtr; current != NULL; 
+
+	for ( current = piPtr; current != NULL;
 		current = current->nextPart){
 
-		printf("[+%5d | %5d bytes | %d]\n", 
+		printf("[+%5d | %5d bytes | %d]\n",
 				current->offset, current->size, current->status);
 	}
 }
@@ -70,7 +70,7 @@ void printHeapMetaInfo()
 
 void printHeap()
 /**********************************************************
- * Print the content of the entire Heap 
+ * Print the content of the entire Heap
  *********************************************************/
 {
     //Included as last debugging mechanism.
@@ -78,7 +78,7 @@ void printHeap()
 
     int* array;
     int size, i;
-    
+
     size = hmi.totalSize / sizeof(int);
     array = (int*)hmi.base;
 
@@ -99,19 +99,35 @@ void printHeapStatistic()
  * Print Heap Usage Statistics
  *********************************************************/
 {
-    //TODO: Copy over your completed function from ex1 here
-
+    //TODO: Calculate and report the various statistics
 
     printf("\nHeap Usage Statistics:\n");
     printf("======================\n");
 
     printf("Total Space: %d bytes\n", hmi.totalSize);
 
-    printf("Total Occupied Partitions: %d\n", 0);
-    printf("\tTotal Occupied Size: %d bytes\n", 0);
+   //Remember to preserve the message format!
+    partInfo* current;
+    int holes = 0;
+    int occupied = 0;
+    int occupied_size = 0;
+    int hole_size=0;
+    for ( current = hmi.pListHead; current != NULL;
+		current = current->nextPart){
+        if (current->status == 1){
+            occupied++;
+            occupied_size+=current->size;
+        }
+		if (current->status == 0){
+            holes++;
+            hole_size+=current->size;
+        }
+	}
+    printf("Total Occupied Partitions: %d\n", occupied);
+    printf("\tTotal Occupied Size: %d bytes\n", occupied_size);
 
-    printf("Total Number of Holes: %d\n", 0);
-    printf("\tTotal Hole Size: %d bytes\n", 0);
+    printf("Total Number of Holes: %d\n", holes);
+    printf("\tTotal Hole Size: %d bytes\n", hole_size);
 }
 
 int setupHeap(int initialSize)
@@ -129,10 +145,10 @@ int setupHeap(int initialSize)
 
 	hmi.totalSize = initialSize;
     hmi.base = base;
-	
+
     //Setup the very first partition info structure
 	hmi.pListHead = buildPartitionInfo( 0, initialSize );
-	
+
 	return 1;
 }
 
@@ -141,7 +157,7 @@ int setupHeap(int initialSize)
 void splitPart(partInfo *bigPart, int newSize)
 /**********************************************************
  * Split a partition "bigPart" into two partitions:
- *    one with newSize bytes, 
+ *    one with newSize bytes,
  *    the other with (original_size - newSize) bytes
  *********************************************************/
 {
@@ -168,7 +184,7 @@ void* mymalloc(int size)
  * Mimic the normal "malloc()":
  *    Attempt to allocate a piece of free heap of (size) bytes
  *    Return the memory addres of this free memory if successful
- *    Return NULL otherwise 
+ *    Return NULL otherwise
  *********************************************************/
 {
     //TODO: Modify the allocation algoritm from First-Fit to
@@ -182,31 +198,39 @@ void* mymalloc(int size)
     // error" when accessing non-aligned memory locations
 
     // Use simple arithmetic to achieve this purpose:
-    //  - Divide by 4 then multiply by 4 gives rounded multiples of 4. 
-    //  - Dddition of 4 round up to the next multiple 
-    //  - subtraction take care of the case where size is already multiples of 4. 
+    //  - Divide by 4 then multiply by 4 gives rounded multiples of 4.
+    //  - Dddition of 4 round up to the next multiple
+    //  - subtraction take care of the case where size is already multiples of 4.
     //This can be achieved via bitwise operation too.
     size = (size - 1) / 4 * 4 + 4;
- 
-    //First-fit algorithm
-	while ( current != NULL && 
-			(current->status == OCCUPIED || current->size < size) ){
 
+
+    partInfo *currentOption = NULL;
+    //First-fit algorithm
+	while ( current != NULL){
+        if (current-> size >= size && current->status != OCCUPIED){
+            if (currentOption == NULL){
+                currentOption = current;
+            }
+            else if (current->size < currentOption->size){
+                currentOption = current;
+            }
+        }
 		current = current->nextPart;
 	}
 
-    if (current == NULL){	//heap full
+    if (currentOption == NULL){	//heap full
 		return NULL;
 	}
 
 	//Do we need to split the partition?
-	if (current->size > size) {
-		splitPart(current, size);
+	if (currentOption->size > size) {
+		splitPart(currentOption, size);
 	}
 
-	current->status = OCCUPIED;
-	
-	return (void*)hmi.base + current->offset;
+	currentOption->status = OCCUPIED;
+
+	return (void*)hmi.base + currentOption->offset;
 }
 
 void myfree(void* address)
@@ -220,13 +244,13 @@ void myfree(void* address)
 
     //Use the offset as a unique ID to look for the right partition
  	partID = address - hmi.base;
-    
-    for( toBeFreed = hmi.pListHead; 
+
+    for( toBeFreed = hmi.pListHead;
         toBeFreed && toBeFreed->offset != partID;
         toBeFreed = toBeFreed->nextPart){
 
         //Essentially an empty for-loop at the moment
-    
+
     }
 
     //Should not happen in this lab as we free only correct adddresses
